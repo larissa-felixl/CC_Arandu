@@ -6,6 +6,8 @@
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Log;
+    use App\Models\FireLevel;
+    use App\Enums\FireLevelEnum;
 
     class ReportController extends Controller
     {
@@ -28,20 +30,30 @@
                 'address'         => 'nullable|string',
                 'img'             => 'nullable|string', 
                 'obs'             => 'nullable|string',
+                'fire_level_name' => 'nullable|string',
             ]);
 
             try {
                 $report = Report::create([
                     'reports_type_id' => $request->reports_type_id,
-                    'user_id'         => $request->user_id ?? 1,
+                    'user_id'         => $request->user_id ?? 1,//teste
                     'latitude'        => $request->latitude,
                     'longitude'       => $request->longitude,
                     'address'         => $request->address,
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);
-
                 //'user_id'         => Auth::id(),
+                if ($report->reports_type_id == 1 && $request->filled('fire_level_name')) {
+                    $enum = FireLevelEnum::fromLabel($request->fire_level_name);
+
+                    if ($enum) {
+                        FireLevel::create([
+                            'reports_id' => $report->id,
+                            'level'      => $enum->value,
+                        ]);
+                    }
+                }
 
                 return response()->json([
                     'message' => 'Denúncia registrada com sucesso!',
