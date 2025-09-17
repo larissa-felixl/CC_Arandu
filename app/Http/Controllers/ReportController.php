@@ -43,6 +43,7 @@
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);
+                
                 //'user_id'         => Auth::id(),
                 if ($report->reports_type_id == 1 && $request->filled('fire_level_name')) {
                     $enum = FireLevelEnum::fromLabel($request->fire_level_name);

@@ -10,7 +10,7 @@
 
         protected $table = 'fire_levels';
 
-        protected $fillable = ['report_id', 'level'];
+        protected $fillable = ['reports_id', 'level'];
 
         public function report()
         {
