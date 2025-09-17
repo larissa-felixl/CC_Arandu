@@ -11,7 +11,7 @@
     {
         public function __construct()
         {
-            $this->middleware('auth:sanctum');
+            //$this->middleware('auth:sanctum');
         }
 
         public function getTypes()
@@ -33,13 +33,15 @@
             try {
                 $report = Report::create([
                     'reports_type_id' => $request->reports_type_id,
-                    'user_id'         => Auth::id(),
+                    'user_id'         => $request->user_id ?? 1,
                     'latitude'        => $request->latitude,
                     'longitude'       => $request->longitude,
                     'address'         => $request->address,
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);
+
+                //'user_id'         => Auth::id(),
 
                 return response()->json([
                     'message' => 'Denúncia registrada com sucesso!',
