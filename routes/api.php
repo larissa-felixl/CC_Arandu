@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportTypeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FireLevelController;
 
+
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -22,8 +23,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/report-types', [ReportTypeController::class, 'store']);          // criar
     Route::put('/report-types/{id}', [ReportTypeController::class, 'update']);     // editar
     Route::delete('/report-types/{id}', [ReportTypeController::class, 'destroy']); // deletar
-    Route::post('/reports', [ReportController::class, 'store']);
-    Route::post('/reports', [ReportController::class, 'store']);                   // criar denúncia autenticado
+    Route::post('/reports', [ReportController::class, 'store']);               // criar denúncia autenticado
     Route::get('/my-reports', [ReportController::class, 'myReports']);             // listar denúncias do usuário autenticado
     Route::post('/reports/{id}/fire-level', [FireLevelController::class, 'setLevel']); // criar/atualizar nível
     Route::get('/reports/{id}/fire-level', [FireLevelController::class, 'getLevel']);  // obter nível
