@@ -13,9 +13,7 @@
         protected $fillable = [
             'reports_type_id',
             'user_id',
-            'latitude',
-            'longitude',
-            'address',
+            'coordinate',
             'img',
             'obs',
         ];

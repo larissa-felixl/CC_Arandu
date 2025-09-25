@@ -11,17 +11,13 @@
         {
             $request->validate([
                 'observations' => 'required|string',
-                'address'      => 'required|string',
-                'latitude'     => 'required|numeric',
-                'longitude'    => 'required|numeric',
+                'coordinate'      => 'required|string',
                 'user_id'      => 'required|integer|exists:usuarios,id',
             ]);
 
             $report = Report::create([
                 'observacoes'        => $request->observations,
-                'endereco'           => $request->address,
-                'latitude'           => $request->latitude,
-                'longitude'          => $request->longitude,
+                'coordenadas'           => $request->coordinate,
                 'usuario_id'         => $request->user_id,
                 'tipo_denuncias_id'  => 1, 
             ]);
@@ -36,17 +32,13 @@
         {
             $request->validate([
                 'observations' => 'required|string',
-                'address'      => 'required|string',
-                'latitude'     => 'required|numeric',
-                'longitude'    => 'required|numeric',
+                'coordinate'   => 'required|string',
                 'user_id'      => 'required|integer|exists:usuarios,id',
             ]);
 
             $report = Report::create([
                 'observacoes'        => $request->observations,
-                'endereco'           => $request->address,
-                'latitude'           => $request->latitude,
-                'longitude'          => $request->longitude,
+                'coordenadas'        => $request->coordinate,
                 'usuario_id'         => $request->user_id,
                 'tipo_denuncias_id'  => 2, 
             ]);

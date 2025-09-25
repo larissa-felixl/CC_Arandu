@@ -25,9 +25,7 @@
         {
             $request->validate([
                 'reports_type_id' => 'required|exists:reports_types,id',
-                'latitude'        => 'required|numeric',
-                'longitude'       => 'required|numeric',
-                'address'         => 'nullable|string',
+                'coordinate'      => 'required|string',
                 'img'             => 'nullable|string', 
                 'obs'             => 'nullable|string',
                 'fire_level_name' => 'nullable|string',
@@ -37,9 +35,7 @@
                 $report = Report::create([
                     'reports_type_id' => $request->reports_type_id,
                     'user_id'         => Auth::id(),
-                    'latitude'        => $request->latitude,
-                    'longitude'       => $request->longitude,
-                    'address'         => $request->address,
+                    'coordinate'      => $request->coordinate,
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);
