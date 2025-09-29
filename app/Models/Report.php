@@ -13,6 +13,7 @@
         protected $fillable = [
             'reports_type_id',
             'user_id',
+            'city_id',
             'coordinate',
             'img',
             'obs',
@@ -32,5 +33,9 @@
         {
             return $this->hasOne(FireLevel::class, 'report_id');
         }
-    
+
+        public function city()
+        {
+            return $this->belongsTo(City::class, 'city_id');
+        }
     }

@@ -27,4 +27,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/my-reports', [ReportController::class, 'myReports']);             // listar denúncias do usuário autenticado
     Route::post('/reports/{id}/fire-level', [FireLevelController::class, 'setLevel']); // criar/atualizar nível
     Route::get('/reports/{id}/fire-level', [FireLevelController::class, 'getLevel']);  // obter nível
+
+    // Relatório por cidade (apenas admins)
+    Route::get('/report-by-city', [ReportController::class, 'reportByCity'])->middleware('is.admin');
 });
