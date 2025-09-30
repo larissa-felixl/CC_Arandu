@@ -10,12 +10,13 @@ return new class extends Migration
 {
     Schema::create('reports', function (Blueprint $table) {
         $table->id();
-    $table->foreignId('reports_type_id')->constrained('reports_types');
-    $table->foreignId('user_id')->constrained('users'); // já vem do Breeze
-    // $table->foreignId('city_id')->nullable()->constrained('cities'); // Removido: não queremos mais a tabela cities
-    $table->string('coordinate');
-    $table->string('img')->nullable();
-    $table->text('obs')->nullable();
+        $table->foreignId('reports_type_id')->constrained('reports_types');
+        $table->foreignId('user_id')->constrained('users'); // já vem do Breeze
+        $table->float('latitude');
+        $table->float('longitude');
+        $table->string('address')->nullable();
+        $table->string('img')->nullable();
+        $table->text('obs')->nullable();
         $table->timestamps();
     });
 }
