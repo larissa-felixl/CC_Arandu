@@ -1,8 +1,8 @@
 <?php
-
-Route::middleware('api')->group(function () {
-    require __DIR__.'/auth.php';
-});
+# comentei por que tava dando problema de rota duplicada
+// Route::middleware('api')->group(function () {
+//     require __DIR__.'/auth.php';
+// });
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +12,9 @@ use App\Http\Controllers\ReportTypeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FireLevelController;
 
+Route::middleware('api')->group(function () {
+    require __DIR__.'/api-auth.php';  // Importa só as rotas de autenticação da API
+});
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
