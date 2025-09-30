@@ -1,0 +1,16 @@
+pra fazer isso voce precisar estar com o docker desktop aberto
+
+se voce anda não buildou a imagem
+    docker build -f docker/8.2-prod/Dockerfile -t arandu:latest .
+
+apos ter buildado a imagem
+    docker run -d -p 8000:80 --name arandu-container arandu:latest
+    apos isso ele ja inicia o container automaticamente, então não precisa usar o "docker start arandu-container"
+
+usa esses comando apos ter rodado os dois comando acima comandos acima, (tambem pode fazer pelo docker desktop)
+
+    para desligar o container 
+        docker stop arandu-container
+
+    para iniciar o container
+        docker start arandu-container
