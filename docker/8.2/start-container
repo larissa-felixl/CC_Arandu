@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Corrige permissões para storage, cache e .env
+chown -R sail:"${WWWGROUP:-1001}" /var/www/html/storage /var/www/html/bootstrap/cache || true
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
+chown sail:"${WWWGROUP:-1001}" /var/www/html/.env || true
+chmod 664 /var/www/html/.env || true
+touch /var/www/html/storage/logs/laravel.log
+chown sail:"${WWWGROUP:-1001}" /var/www/html/storage/logs/laravel.log || true
+chmod 664 /var/www/html/storage/logs/laravel.log || true
+
+# Garante que o diretório do composer existe e tem permissão
+mkdir -p /home/sail/.composer
+chmod -R ugo+rw /home/sail/.composer
+
+if [ $# -gt 0 ]; then
+    exec "$@"
+else
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi
