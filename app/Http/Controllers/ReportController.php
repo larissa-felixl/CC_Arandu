@@ -27,10 +27,7 @@ use App\Http\Controllers\Controller;
                 'reports_type_id' => 'required|exists:reports_types,id',
                 'latitude'        => 'required|numeric',
                 'longitude'       => 'required|numeric',
-                'city'            => 'nullable|string',
-                'street'          => 'nullable|string',
-                'state'           => 'nullable|string',
-                'country'         => 'nullable|string',
+                'address'         => 'nullable|string',
                 'img'             => 'nullable|string', 
                 'obs'             => 'nullable|string',
             ]);
@@ -41,10 +38,7 @@ use App\Http\Controllers\Controller;
                     'user_id'         => Auth::id(),
                     'latitude'        => $request->latitude,
                     'longitude'       => $request->longitude,
-                    'city'            => $request->city,
-                    'street'          => $request->street,
-                    'state'           => $request->state,
-                    'country'         => $request->country,
+                    'address'         => $request->address,
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);

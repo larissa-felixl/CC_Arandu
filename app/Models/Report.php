@@ -15,10 +15,7 @@
             'user_id',
             'latitude',
             'longitude',
-            'city',
-            'street',
-            'state',
-            'country',
+            'address',
             'img',
             'obs',
         ];
