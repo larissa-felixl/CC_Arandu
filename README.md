@@ -16,11 +16,11 @@ Criado com foco em acessibilidade, eficiência e impacto social, o Arandu demons
 - Coleta de dados para análise científica e apoio à gestão pública.
 - Design acessível e intuitivo, pensado para comunidades com pouco acesso à tecnologia.
 
-🛠️ Tecnologias Utilizadas
-<a href="https://www.flutterflow.io/">FlutterFlow </a>
-<a href="https://laravel.com/">Laravel 12 </a>
-<a href="https://supabase.com/dashboard/sign-in?returnTo=%2Fproject%2Feysrbueqonxmagkqkmog">Supabase </a>
-<a href="https://www.figma.com/">Figma </a>
-<a href="https://www.docker.com/">Docker </a>
-<a href="https://ngrok.com/">Ngrok </a>
+<h4> 🛠️ Tecnologias Utilizadas </h4>
+<a href="https://www.flutterflow.io/">FlutterFlow </a> <br>
+<a href="https://laravel.com/">Laravel 12 </a> <br>
+<a href="https://supabase.com/dashboard/sign-in?returnTo=%2Fproject%2Feysrbueqonxmagkqkmog">Supabase </a> <br>
+<a href="https://www.figma.com/">Figma </a> <br>
+<a href="https://www.docker.com/">Docker </a> <br>
+<a href="https://ngrok.com/">Ngrok </a> <br>
 
