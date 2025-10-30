@@ -2,30 +2,30 @@
     namespace App\Enums;
 
     enum FireLevelEnum: int
+{
+    case CONTROLLED     = 1;
+    case SPREADING      = 2;
+    case HARMFUL        = 3;
+    case UNCONTROLLABLE = 4;
+
+    public function label(): string
     {
-        case CONTROLLED     = 1;
-        case SPREADING      = 2;
-        case HARMFUL        = 3;
-        case UNCONTROLLABLE = 4;
-
-        public function label(): string
-        {
-            return match($this) {
-                self::CONTROLLED     => 'Controlled Fire',
-                self::SPREADING      => 'Spreading Fire',
-                self::HARMFUL        => 'Harmful Fire',
-                self::UNCONTROLLABLE => 'Uncontrollable Fire',
-            };
-        }
-
-        public static function fromLabel(string $label): ?self
-        {
-            return match(strtolower($label)) {
-                'controlled fire'     => self::CONTROLLED,
-                'spreading fire'      => self::SPREADING,
-                'harmful fire'        => self::HARMFUL,
-                'uncontrollable fire' => self::UNCONTROLLABLE,
-                default => null,
-            };
-        }
+        return match($this) {
+            self::CONTROLLED     => 'baixo',
+            self::SPREADING      => 'médio',
+            self::HARMFUL        => 'alto',
+            self::UNCONTROLLABLE => 'prejudicial',
+        };
     }
+
+    public static function fromLabel(string $label): ?self
+    {
+        return match(strtolower($label)) {
+            'baixo'        => self::CONTROLLED,
+            'médio', 'medio' => self::SPREADING, // 
+            'alto'         => self::HARMFUL,
+            'prejudicial'  => self::UNCONTROLLABLE,
+            default => null,
+        };
+    }
+}
