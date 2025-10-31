@@ -25,11 +25,13 @@ class RegisteredUserController extends Controller
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password' => ['required', 'string', 'min:8'], // remove 'confirmed' se não tiver password_confirmation
+        'acess_level' => ['required', 'integer', 'max:255'],
     ]);
 
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
+        'acess_level' => $request->acess_level,
         'password' => Hash::make($request->password),
     ]);
 
