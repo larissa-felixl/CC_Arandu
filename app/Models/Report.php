@@ -16,6 +16,8 @@
             'latitude',
             'longitude',
             'address',
+            'city',
+            'neighborhood',
             'img',
             'obs',
         ];
