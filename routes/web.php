@@ -7,6 +7,7 @@ require __DIR__.'/auth.php';
 
 Route::get('/login', [AuthenticatedSessionWebController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthenticatedSessionWebController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthenticatedSessionWebController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
