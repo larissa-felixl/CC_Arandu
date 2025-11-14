@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - {{ config('app.name') }}</title>
+    <title>Focos de Lixo - {{ config('app.name') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -10,18 +10,23 @@
             background-color: #f5f5f5;
         }
         .header {
-            background-color: #4CAF50;
+            background-color: #FF9800;
             color: white;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
         }
-        .user-info {
-            background-color: white;
-            padding: 15px;
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
             border-radius: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .back-button:hover {
+            background-color: #45a049;
         }
         .reports-container {
             background-color: white;
@@ -43,70 +48,45 @@
             font-size: 12px;
             font-weight: bold;
         }
-        .badge-city {
-            background-color: #2196F3;
-            color: white;
-        }
         .badge-type {
             background-color: #FF9800;
+            color: white;
+        }
+        .badge-city {
+            background-color: #2196F3;
             color: white;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Bem-vindo ao Dashboard, {{ $user->name }}!</h1>
-        <p>Você está logado e visualizando informações {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}</p>
+        <h1>Focos de Lixo</h1>
+        <p>Visualizando relatórios de focos de lixo</p>
     </div>
 
-    <button type="button"><a href="{{ route('garbage') }}">focos de lixo</a></button>
-
-    <div class="user-info">
-        <h3>Informações do Perfil</h3>
-        <p><strong>Nome:</strong> {{ $user->name }}</p>
-        <p><strong>Email:</strong> {{ $user->email }}</p>
-        <p><strong>Cidade atribuída:</strong> 
-            @if($city)
-                <span class="badge badge-city">{{ $city }}</span>
-            @else
-                <span style="color: #999;">Nenhuma cidade específica (acesso completo)</span>
-            @endif
-        </p>
-    </div>
+    <a href="{{ route('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
 
     <div class="reports-container">
-        <h2>Relatórios {{ $city ? 'de ' . $city : 'de todas as cidades' }}</h2>
+        <h2>Relatórios de Lixo</h2>
         
         @if($reports->count() > 0)
             @foreach($reports as $report)
                 <div class="report-item">
                     <p><strong>Tipo:</strong> <span class="badge badge-type">{{ $report->type->name ?? 'N/A' }}</span></p>
-                    <p><strong>Cidade:</strong> {{ $report->city }}</p>
+                    <p><strong>Cidade:</strong> <span class="badge badge-city">{{ $report->city }}</span></p>
                     <p><strong>Bairro:</strong> {{ $report->neighborhood }}</p>
                     <p><strong>Endereço:</strong> {{ $report->address }}</p>
                     @if($report->obs)
                         <p><strong>Observações:</strong> {{ $report->obs }}</p>
                     @endif
                     <p><strong>Data:</strong> {{ $report->created_at->format('d/m/Y H:i') }}</p>
-                    @if($report->fireLevel)
-                        <p><strong>Nível de Fogo:</strong> {{ $report->fireLevel->level ?? 'N/A' }}</p>
-                    @endif
                 </div>
             @endforeach
         @else
             <p style="color: #999; text-align: center; padding: 20px;">
-                Nenhum relatório encontrado{{ $city ? ' para a cidade de ' . $city : '' }}.
+                Nenhum relatório de lixo encontrado.
             </p>
         @endif
-    </div>
-
-    <div style="margin-top: 20px;">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Sair
-            </button>
-        </form>
     </div>
 </body>
 </html>

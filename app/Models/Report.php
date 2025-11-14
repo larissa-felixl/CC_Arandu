@@ -34,7 +34,7 @@
 
         public function fireLevel()
         {
-            return $this->hasOne(FireLevel::class, 'report_id');
+            return $this->hasOne(FireLevel::class, 'reports_id');
         }
 
         

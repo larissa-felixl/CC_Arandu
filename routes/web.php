@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedSessionWebController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GarbageController;
 
 require __DIR__.'/auth.php';
 
@@ -12,6 +13,10 @@ Route::post('/logout', [AuthenticatedSessionWebController::class, 'logout'])->na
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
+
+Route::get('/garbage', [GarbageController::class, 'index'])
+    ->middleware('auth')
+    ->name('garbage');
 
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];

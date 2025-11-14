@@ -14,7 +14,7 @@
 
         public function report()
         {
-            return $this->belongsTo(Report::class, 'report_id');
+            return $this->belongsTo(Report::class, 'reports_id');
         }
     }
 
