@@ -54,6 +54,16 @@
     </style>
 </head>
 <body>
+    <header>
+        <ul>
+            <li>Galeria</li>
+            <li>Logout</li>
+            <li>Dashboard</li>
+            <li>sobre</li>
+            <li><a href="{{ route('profile') }}">perfil</a></li>
+        </ul>
+    </header>
+
     <div class="header">
         <h1>Bem-vindo ao Dashboard, {{ $user->name }}!</h1>
         <p>Você está logado e visualizando informações {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}</p>
