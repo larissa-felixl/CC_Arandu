@@ -61,13 +61,13 @@
 <body>
     <div class="header">
         <h1>Focos de Lixo</h1>
-        <p>Visualizando relatórios de focos de lixo</p>
+        <p>Visualizando relatórios de focos de lixo {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}</p>
     </div>
 
     <a href="{{ route('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
 
     <div class="reports-container">
-        <h2>Relatórios de Lixo</h2>
+        <h2>Relatórios de Lixo {{ $city ? 'de ' . $city : '' }}</h2>
         
         @if($reports->count() > 0)
             @foreach($reports as $report)
@@ -84,7 +84,7 @@
             @endforeach
         @else
             <p style="color: #999; text-align: center; padding: 20px;">
-                Nenhum relatório de lixo encontrado.
+                Nenhum relatório de lixo encontrado{{ $city ? ' para a cidade de ' . $city : '' }}.
             </p>
         @endif
     </div>

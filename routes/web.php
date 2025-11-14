@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedSessionWebController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GarbageController;
+use App\Http\Controllers\FireController;
 
 require __DIR__.'/auth.php';
 
@@ -17,6 +18,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::get('/garbage', [GarbageController::class, 'index'])
     ->middleware('auth')
     ->name('garbage');
+
+Route::get('/fire', [FireController::class, 'index'])
+    ->middleware('auth')
+    ->name('fire');
 
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];

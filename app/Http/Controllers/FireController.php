@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
 
-class GarbageController extends Controller
+class FireController extends Controller
 {
     // Mapeamento estático: email do usuário → cidade (mesmo do DashboardController)
     private $emailCityMap = [
@@ -22,9 +22,9 @@ class GarbageController extends Controller
         // Verifica se o email do usuário está no mapeamento
         $city = $this->emailCityMap[$userEmail] ?? null;
         
-        // Filtra reports do tipo lixo (reports_type_id = 2)
+        // Filtra reports do tipo fogo/queimada (reports_type_id = 1)
         $query = Report::with(['type', 'user'])
-            ->where('reports_type_id', 2);
+            ->where('reports_type_id', 1);
         
         // Se houver cidade mapeada, filtra também por cidade
         if ($city) {
@@ -33,7 +33,7 @@ class GarbageController extends Controller
         
         $reports = $query->orderBy('created_at', 'desc')->get();
         
-        return view('garbage', [
+        return view('fire', [
             'user' => $user,
             'city' => $city,
             'reports' => $reports
