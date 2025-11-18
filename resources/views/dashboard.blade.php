@@ -86,6 +86,14 @@
     </div>
     @endif
 
+    @if($leastMonth)
+    <div style="background-color: #d4edda; ">
+        <h2 >Mês com Menos Denúncias</h2>
+        <p >{{ $leastMonth['name'] }}</p>
+        <p>Total de {{ $leastMonth['total'] }} denúncias</p>
+    </div>
+    @endif
+
     <div style="margin-top: 20px;">
         <a href="{{ route('logout.page') }}" style="display: inline-block; padding: 10px 20px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; cursor: pointer;">
             Sair

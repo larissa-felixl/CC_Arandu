@@ -45,6 +45,20 @@ class DashboardController extends Controller
             ->groupBy('year', 'month')
             ->orderBy('total', 'desc')
             ->first();
+
+        // Nova query para o mês com menos denúncias
+        $statsQueryLeast = Report::query();
+        if ($city) {
+            $statsQueryLeast->where('city', $city);
+        }
+        
+        $reportsByLeastMonth = $statsQueryLeast->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(*) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('total', 'asc')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->first();
+        
         
         // Formata o mês com mais denúncias
         $peakMonth = null;
@@ -60,11 +74,26 @@ class DashboardController extends Controller
             ];
         }
         
+        // Formata o mês com menos denúncias
+        $leastMonth = null;
+        if ($reportsByLeastMonth) {
+            $monthNames = [
+                1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+                5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+                9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+            ];
+            $leastMonth = [
+                'name' => $monthNames[$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
+                'total' => $reportsByLeastMonth->total
+            ];
+        }
+        
         return view('dashboard', [
             'user' => $user,
             'city' => $city,
             'reports' => $reports,
-            'peakMonth' => $peakMonth
+            'peakMonth' => $peakMonth,
+            'leastMonth' => $leastMonth
         ]);
     }
 
