@@ -45,4 +45,8 @@ class AuthenticatedSessionWebController extends Controller
     {
         return view('logout');
     }
+
+    public function aboutView(){
+        return view('about');
+    }
 }

@@ -29,6 +29,9 @@ Route::get('/profile', [ProfileController::class, 'index'])
     ->middleware('auth')
     ->name('profile');
 
+Route::get('/about', [AuthenticatedSessionWebController::class, 'aboutView'])
+    ->name('about');        
+    
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];
 // });

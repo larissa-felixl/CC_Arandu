@@ -11,7 +11,7 @@
             <li><a href="#">Galeria</a></li>
             <li><a href="{{ route('logout') }}">Logout</a></li>
             <li><a href="{{ route('dashboard.page') }}">Dashboard</a></li>
-            <li><a href="#">sobre</a></li>
+            <li><a href="{{ route('about') }}">sobre</a></li>
             <li><a href="{{ route('profile') }}">perfil</a></li>
         </ul>
     </header>
