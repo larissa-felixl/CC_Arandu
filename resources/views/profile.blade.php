@@ -8,10 +8,10 @@
 <body>
     <header>
         <ul>
-            <li>Galeria</li>
-            <li>Logout</li>
-            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li>sobre</li>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="{{ route('logout') }}">Logout</a></li>
+            <li><a href="{{ route('dashboard.page') }}">Dashboard</a></li>
+            <li><a href="#">sobre</a></li>
             <li><a href="{{ route('profile') }}">perfil</a></li>
         </ul>
     </header>

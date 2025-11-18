@@ -56,10 +56,10 @@
 <body>
     <header>
         <ul>
-            <li>Galeria</li>
-            <li>Logout</li>
-            <li>Dashboard</li>
-            <li>sobre</li>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="{{ route('logout.page') }}">Logout</a></li>
+            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li><a href="#">sobre</a></li>
             <li><a href="{{ route('profile') }}">perfil</a></li>
         </ul>
     </header>
@@ -115,12 +115,9 @@
     </div>
 
     <div style="margin-top: 20px;">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Sair
-            </button>
-        </form>
+        <a href="{{ route('logout.page') }}" style="display: inline-block; padding: 10px 20px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; cursor: pointer;">
+            Sair
+        </a>
     </div>
 </body>
 </html>

@@ -38,6 +38,11 @@ class AuthenticatedSessionWebController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return view('logged-out');
+    }
+    
+    public function showLogout()
+    {
+        return view('logout');
     }
 }

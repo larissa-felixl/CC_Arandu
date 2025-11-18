@@ -59,6 +59,15 @@
     </style>
 </head>
 <body>
+    <header>
+        <ul>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="{{ route('logout') }}">Logout</a></li>
+            <li><a href="{{ route('dashboard.page') }}">Dashboard</a></li>
+            <li><a href="#">sobre</a></li>
+            <li><a href="{{ route('profile') }}">perfil</a></li>
+        </ul>
+    </header>
     <div class="header">
         <h1>Focos de Queimada</h1>
         <p>Visualizando relatórios de focos de queimada {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}</p>
