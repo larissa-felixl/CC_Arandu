@@ -56,7 +56,6 @@
 <body>
     <header>
         <ul>
-            <li><a href="#">Galeria</a></li>
             <li><a href="{{ route('logout.page') }}">Logout</a></li>
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('about') }}">sobre</a></li>
@@ -73,46 +72,19 @@
         <button type="button"><a href="{{ route('garbage') }}">focos de lixo</a></button>
         <button type="button"><a href="{{ route('fire') }}">focos de queimada</a></button>
     </div>
-    
 
-    <div class="user-info">
-        <h3>Informações do Perfil</h3>
-        <p><strong>Nome:</strong> {{ $user->name }}</p>
-        <p><strong>Email:</strong> {{ $user->email }}</p>
-        <p><strong>Cidade atribuída:</strong> 
-            @if($city)
-                <span class="badge badge-city">{{ $city }}</span>
-            @else
-                <span style="color: #999;">Nenhuma cidade específica (acesso completo)</span>
-            @endif
-        </p>
+    <div style="background-color: antiquewhite;">
+        <h1>total de denúncias</h1>
+        <p>{{ $reports->count() }}</p>
     </div>
 
-    <div class="reports-container">
-        <h2>Relatórios {{ $city ? 'de ' . $city : 'de todas as cidades' }}</h2>
-        
-        @if($reports->count() > 0)
-            @foreach($reports as $report)
-                <div class="report-item">
-                    <p><strong>Tipo:</strong> <span class="badge badge-type">{{ $report->type->name ?? 'N/A' }}</span></p>
-                    <p><strong>Cidade:</strong> {{ $report->city }}</p>
-                    <p><strong>Bairro:</strong> {{ $report->neighborhood }}</p>
-                    <p><strong>Endereço:</strong> {{ $report->address }}</p>
-                    @if($report->obs)
-                        <p><strong>Observações:</strong> {{ $report->obs }}</p>
-                    @endif
-                    <p><strong>Data:</strong> {{ $report->created_at->format('d/m/Y H:i') }}</p>
-                    @if($report->fireLevel)
-                        <p><strong>Nível de Fogo:</strong> {{ $report->fireLevel->level ?? 'N/A' }}</p>
-                    @endif
-                </div>
-            @endforeach
-        @else
-            <p style="color: #999; text-align: center; padding: 20px;">
-                Nenhum relatório encontrado{{ $city ? ' para a cidade de ' . $city : '' }}.
-            </p>
-        @endif
+    @if($peakMonth)
+    <div style="background-color: bisque ">
+        <h2 >Mês com Mais Denúncias</h2>
+        <p>{{ $peakMonth['name'] }}</p>
+        <p>Total de {{ $peakMonth['total'] }} denúncias</p>
     </div>
+    @endif
 
     <div style="margin-top: 20px;">
         <a href="{{ route('logout.page') }}" style="display: inline-block; padding: 10px 20px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; cursor: pointer;">

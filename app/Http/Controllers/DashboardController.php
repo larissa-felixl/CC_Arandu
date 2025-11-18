@@ -24,23 +24,47 @@ class DashboardController extends Controller
         // Verifica se o email do usuário está no mapeamento
         $city = $this->emailCityMap[$userEmail] ?? null;
         
+        // Query base para reports
+        $reportsQuery = Report::with(['type', 'user', 'fireLevel']);
+        
         // Se houver cidade mapeada, filtra os reports por essa cidade
         if ($city) {
-            $reports = Report::where('city', $city)
-                ->with(['type', 'user', 'fireLevel'])
-                ->orderBy('created_at', 'desc')
-                ->get();
-        } else {
-            // Se não houver mapeamento, mostra todos (admin ou usuário sem cidade)
-            $reports = Report::with(['type', 'user', 'fireLevel'])
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $reportsQuery->where('city', $city);
+        }
+        
+        // Pega todos os reports
+        $reports = $reportsQuery->orderBy('created_at', 'desc')->get();
+        
+        // Calcula estatísticas por mês (nova query)
+        $statsQuery = Report::query();
+        if ($city) {
+            $statsQuery->where('city', $city);
+        }
+        
+        $reportsByMonth = $statsQuery->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(*) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('total', 'desc')
+            ->first();
+        
+        // Formata o mês com mais denúncias
+        $peakMonth = null;
+        if ($reportsByMonth) {
+            $monthNames = [
+                1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+                5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+                9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+            ];
+            $peakMonth = [
+                'name' => $monthNames[$reportsByMonth->month] . '/' . $reportsByMonth->year,
+                'total' => $reportsByMonth->total
+            ];
         }
         
         return view('dashboard', [
             'user' => $user,
             'city' => $city,
-            'reports' => $reports
+            'reports' => $reports,
+            'peakMonth' => $peakMonth
         ]);
     }
 

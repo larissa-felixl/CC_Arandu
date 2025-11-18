@@ -61,7 +61,6 @@
 <body>
     <header>
         <ul>
-            <li><a href="#">Galeria</a></li>
             <li><a href="{{ route('logout') }}">Logout</a></li>
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('about') }}">sobre</a></li>
