@@ -6,6 +6,15 @@
     <title>Sobre o nosso Projeto</title>
 </head>
 <body>
+    <header>
+        <ul>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="{{ route('logout') }}">Logout</a></li>
+            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ route('about') }}">sobre</a></li>
+            <li><a href="{{ route('profile') }}">perfil</a></li>
+        </ul>
+    </header>
     <h1>Quem somos?</h1>
     <p>Somos uma equipe de estudantes do curso técnico em Desenvolvimento de Sistemas da EEEP Jeová Costa Lima, movidas pela paixão por tecnologia e inovação. Nosso projeto surgiu com o propósito de auxiliar na coleta e organização de dados sobre duas problemáticas que impactam diretamente o meio ambiente: os focos de lixo viciado e as queimadas.
 A ideia nasceu a partir do LabGirlsTech, nosso outro projeto, que tem como objetivo incentivar a presença feminina na área da Tecnologia da Informação (TI). Inspiradas por essa iniciativa, decidimos unir nossos conhecimentos para criar uma aplicação funcional capaz de apoiar órgãos públicos no monitoramento e controle dessas ocorrências em toda a região.

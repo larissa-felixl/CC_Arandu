@@ -63,7 +63,7 @@
         <ul>
             <li><a href="#">Galeria</a></li>
             <li><a href="{{ route('logout') }}">Logout</a></li>
-            <li><a href="{{ route('dashboard.page') }}">Dashboard</a></li>
+            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('about') }}">sobre</a></li>
             <li><a href="{{ route('profile') }}">perfil</a></li>
         </ul>
@@ -76,26 +76,44 @@
     <a href="{{ route('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
 
     <div class="reports-container">
-        <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>
-        
-        @if($reports->count() > 0)
-            @foreach($reports as $report)
-                <div class="report-item">
-                    <p><strong>Tipo:</strong> <span class="badge badge-type">{{ $report->type->name ?? 'N/A' }}</span></p>
-                    <p><strong>Cidade:</strong> <span class="badge badge-city">{{ $report->city }}</span></p>
-                    <p><strong>Bairro:</strong> {{ $report->neighborhood }}</p>
-                    <p><strong>Endereço:</strong> {{ $report->address }}</p>
-                    @if($report->obs)
-                        <p><strong>Observações:</strong> {{ $report->obs }}</p>
-                    @endif
-                    <p><strong>Data:</strong> {{ $report->created_at->format('d/m/Y H:i') }}</p>
-                </div>
-            @endforeach
-        @else
-            <p style="color: #999; text-align: center; padding: 20px;">
-                Nenhum relatório de queimada encontrado{{ $city ? ' para a cidade de ' . $city : '' }}.
-            </p>
-        @endif
-    </div>
+        <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>    
+        <table border="2">
+            <thead>
+                <tr>
+                    <th>endereço</th>
+                    <th>descrição</th>
+                    <th>nível</th>
+                    <th>data</th>
+                    <th>hora</th>
+                    <th>foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($reports->count() > 0)
+                    @foreach($reports as $report)
+                    <tr>
+                        <td>{{ $report->address }}</td>
+                        <td>{{ $report->obs }}</td>
+                        <td>{{ $report->fireLevel->level ?? 'N/A' }}</td>
+                        <td>{{ $report->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $report->created_at->format('H:i') }}</td>
+                        <td>
+                            @if($report->photo_url)
+                                <img src="{{ $report->photo_url }}" alt="Foto do relatório" width="100">
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #999; padding: 20px;">
+                            Nenhum relatório de queimada encontrado{{ $city ? ' para a cidade de ' . $city : '' }}.
+                        </td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
 </body>
 </html>

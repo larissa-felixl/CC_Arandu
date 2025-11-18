@@ -23,7 +23,7 @@ class FireController extends Controller
         $city = $this->emailCityMap[$userEmail] ?? null;
         
         // Filtra reports do tipo fogo/queimada (reports_type_id = 1)
-        $query = Report::with(['type', 'user'])
+        $query = Report::with(['type', 'user', 'fireLevel'])
             ->where('reports_type_id', 1);
         
         // Se houver cidade mapeada, filtra também por cidade
