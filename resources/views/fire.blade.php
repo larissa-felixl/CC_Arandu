@@ -75,7 +75,6 @@
 
     <a href="{{ route('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
 
-    <div class="reports-container">
         <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>    
         <table border="2">
             <thead>
