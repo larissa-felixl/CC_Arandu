@@ -115,8 +115,8 @@
                         <td>{{ $report->created_at->format('d/m/Y') }}</td>
                         <td>{{ $report->created_at->format('H:i') }}</td>
                         <td>
-                            @if($report->photo_url)
-                                <img src="{{ $report->photo_url }}" alt="Foto do relatório" width="100">
+                            @if($report->img)
+                                <img src="{{ $report->img }}" alt="Foto do relatório" width="100">
                             @else
                                 N/A
                             @endif

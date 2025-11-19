@@ -113,12 +113,13 @@
                     <tr>
                         <td>{{ $report->address }}</td>
                         <td>{{ $report->obs }}</td>
-                        <td>{{ $report->fireLevel->level ?? 'N/A' }}</td>
+                        <td>{{ $report->fireLevel ? $report->fireLevel->level_name : 'N/A' }}</td>
                         <td>{{ $report->created_at->format('d/m/Y') }}</td>
                         <td>{{ $report->created_at->format('H:i') }}</td>
+                        <!-- <td><img src="{{ $report->img }}" alt=""></td> -->
                         <td>
-                            @if($report->photo_url)
-                                <img src="{{ $report->photo_url }}" alt="Foto do relatório" width="100">
+                            @if($report->img)
+                                <img src="{{ $report->img }}" alt="Foto do relatório" width="100">
                             @else
                                 N/A
                             @endif
