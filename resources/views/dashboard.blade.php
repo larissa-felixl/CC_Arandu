@@ -73,6 +73,17 @@
         <button type="button"><a href="{{ route('fire') }}">focos de queimada</a></button>
     </div>
 
+    <div>
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam similique voluptatem ipsa vitae accusantium quam mollitia repellat ex, asperiores tenetur, neque rem saepe eum iste velit magni placeat? Necessitatibus, illum!</span>
+    </div>
+
+    <div>
+        <h1 style="background-color: #d4edda;">Incidencias </h1>
+        <span>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga, cupiditate magni, ea error porro ut amet veritatis nostrum aliquid eligendi quidem sint dolore. Possimus animi eum sequi, unde deserunt ea.
+        </span>
+    </div>
+
     <div style="background-color: antiquewhite;">
         <h1>total de denúncias</h1>
         <p>{{ $reports->count() }}</p>

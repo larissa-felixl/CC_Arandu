@@ -73,8 +73,29 @@
     </div>
 
     <a href="{{ route('dashboard') }}" class="back-button">← Voltar ao Dashboard</a>
+    
+    <div style="background-color: antiquewhite;">
+        <h2>Total de Denúncias de Queimada</h2>
+        <p>{{ $reports->count() }}</p>
+    </div>
 
-        <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>    
+    @if($peakMonth)
+    <div style="background-color: bisque;">
+        <h2> Mês com Mais Denúncias de Queimada</h2>
+        <p>{{ $peakMonth['name'] }}</p>
+        <p>Total de {{ $peakMonth['total'] }} denúncias</p>
+    </div>
+    @endif
+
+    @if($leastMonth)
+    <div style="background-color: #d4edda;">
+        <h2>📉 Mês com Menos Denúncias de Queimada</h2>
+        <p>{{ $leastMonth['name'] }}</p>
+        <p>Total de {{ $leastMonth['total'] }} denúncias</p>
+    </div>
+    @endif
+
+    <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>    
         <table border="2">
             <thead>
                 <tr>

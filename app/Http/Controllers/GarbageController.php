@@ -33,10 +33,64 @@ class GarbageController extends Controller
         
         $reports = $query->orderBy('created_at', 'desc')->get();
         
+        // Calcula estatísticas por mês - Mês com MAIS denúncias
+        $statsQuery = Report::where('reports_type_id', 2);
+        if ($city) {
+            $statsQuery->where('city', $city);
+        }
+        
+        $reportsByMonth = $statsQuery->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(*) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('total', 'desc')
+            ->first();
+
+        // Calcula estatísticas por mês - Mês com MENOS denúncias
+        $statsQueryLeast = Report::where('reports_type_id', 2);
+        if ($city) {
+            $statsQueryLeast->where('city', $city);
+        }
+        
+        $reportsByLeastMonth = $statsQueryLeast->selectRaw('EXTRACT(YEAR FROM created_at) as year, EXTRACT(MONTH FROM created_at) as month, COUNT(*) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('total', 'asc')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->first();
+        
+        // Formata o mês com mais denúncias
+        $peakMonth = null;
+        if ($reportsByMonth) {
+            $monthNames = [
+                1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+                5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+                9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+            ];
+            $peakMonth = [
+                'name' => $monthNames[$reportsByMonth->month] . '/' . $reportsByMonth->year,
+                'total' => $reportsByMonth->total
+            ];
+        }
+        
+        // Formata o mês com menos denúncias
+        $leastMonth = null;
+        if ($reportsByLeastMonth) {
+            $monthNames = [
+                1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+                5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+                9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+            ];
+            $leastMonth = [
+                'name' => $monthNames[$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
+                'total' => $reportsByLeastMonth->total
+            ];
+        }
+        
         return view('garbage', [
             'user' => $user,
             'city' => $city,
-            'reports' => $reports
+            'reports' => $reports,
+            'peakMonth' => $peakMonth,
+            'leastMonth' => $leastMonth
         ]);
     }
 }
