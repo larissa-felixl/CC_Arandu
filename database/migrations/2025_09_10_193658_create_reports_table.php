@@ -14,7 +14,9 @@ return new class extends Migration
         $table->foreignId('user_id')->constrained('users'); // já vem do Breeze
         $table->float('latitude');
         $table->float('longitude');
-    $table->string('address')->nullable();
+        $table->string('address')->nullable();
+        $table->string('city')->nullable();
+        $table->string('neighborhood')->nullable();
         $table->string('img')->nullable();
         $table->text('obs')->nullable();
         $table->timestamps();
