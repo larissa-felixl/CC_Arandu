@@ -10,22 +10,12 @@
 <body class="min-h-screen flex bg-gray-100 font-montserrat">
 
     <div 
-        class="hidden lg:flex flex-col justify-between w-1/2 bg-cover bg-center text-white p-10"
+        class="hidden lg:flex flex-col justify-between  bg-cover bg-center text-white object-contain w-110"
         style="background-image: url('{{ asset('images/banner-arandu.png') }}');"
     >
-        <div class="mt-10">
-            <p class="italic text-sm leading-relaxed text-[#f5e7d0] drop-shadow-md">
-                Protegendo o <span class="font-bold">meio ambiente</span> hoje <br>
-                para <span class="font-semibold">garantir</span> resultados no futuro.
-            </p>
-        </div>
-
-        <div class="flex items-center space-x-2 mb-8">
-            <h1 class="text-4xl font-semibold tracking-widest text-[#f5e7d0]">ARANDU</h1>
-        </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center w-full lg:w-1/2 px-8">
+    <div class="flex flex-col justify-center items-center w-full lg:w-1/2 px-8 pl-75">
         <h2 class="text-2xl font-bold text-[#7b3f1c] underline mb-6">LOGIN</h2>
 
         <form method="POST" action="{{ route('login.post') }}" class="bg-white shadow-md rounded-lg p-8 w-full max-w-sm">
