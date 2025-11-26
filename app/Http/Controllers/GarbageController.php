@@ -10,7 +10,7 @@ class GarbageController extends Controller
 {
     // Mapeamento estático: email do usuário → cidade (mesmo do DashboardController)
     private $emailCityMap = [
-        'teste@gmail.com' => 'Russas',
+        'teste@gmail.com' => 'Fortaleza',
         // Adicione mais mapeamentos conforme necessário
     ];
 

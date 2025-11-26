@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     // Mapeamento estático: email do usuário → cidade
     private $emailCityMap = [
-        'teste@gmail.com' => 'Russas',
+        'teste@gmail.com' => 'Fortaleza',
         // Adicione mais mapeamentos conforme necessário:
         // 'outro@gmail.com' => 'Fortaleza',
         // 'usuario@gmail.com' => 'Limoeiro do Norte',
