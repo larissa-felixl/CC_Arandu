@@ -37,8 +37,5 @@
             return $this->hasOne(FireLevel::class, 'reports_id');
         }
 
-        public function city()
-        {
-            return $this->belongsTo(City::class, 'city_id');
-        }
+        
     }
