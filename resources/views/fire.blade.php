@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Focos de queimada - {{ config('app.name') }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,6 +96,13 @@
     </div>
     @endif
 
+    <div>
+        <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
+        <h3 class="text-lg text-gray-700 font-semibold mb-3 text-center">Níveis de Fogo</h3>
+        <canvas id="tiposChart"></canvas>
+    </div>
+    </div>
+
     <h2>Relatórios de Queimada {{ $city ? 'de ' . $city : '' }}</h2>    
         <table border="2">
             <thead>
@@ -135,5 +143,44 @@
                 @endif
             </tbody>
         </table>
+
+<script>
+    const labelsTipos = @json($labelsTipos);
+    const valuesTipos = @json($valuesTipos);
+    const nomesTipos = {
+        1: "Focos baixos",
+        2: "Focos Médios",
+        3: "Focos Grandes",
+        4: "Focos Preocupantes"
+    };
+
+    new Chart(document.getElementById('tiposChart'), {
+        type: 'doughnut',
+        data: {
+            labels: labelsTipos.map(n => nomesTipos[n]),
+            datasets: [{
+                data: valuesTipos,
+                backgroundColor: [
+                    '#6C0E0E', '#A45007', '#C3AE83',
+                    '#935139'
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            const total = ctx.chart._metasets[0].total;
+                            const value = ctx.raw;
+                            const pct = ((value / total) * 100).toFixed(1);
+                            return `${value} denúncias (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>

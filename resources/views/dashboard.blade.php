@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - {{ config('app.name') }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,8 +65,8 @@
     </header>
 
     <div class="header">
-        <h1>Bem-vindo ao Dashboard, {{ $user->name }}!</h1>
-        <p>Você está logado e visualizando informações {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}</p>
+        <h1>Bem-vindo ao Dashboard, {{ Auth::user()->name }}!</h1>
+        <p>Você está logado e visualizando informações {{ Auth::user()->city ? 'da cidade de ' . Auth::user()->city : 'de todas as cidades' }}</p>
     </div>
     <div>
         <h1>Acesse todos os dados de </h1>
@@ -82,6 +83,47 @@
         <span>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga, cupiditate magni, ea error porro ut amet veritatis nostrum aliquid eligendi quidem sint dolore. Possimus animi eum sequi, unde deserunt ea.
         </span>
+    </div>
+
+    <div>
+        <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mb-8">
+            <h3 class="text-lg text-gray-700 font-semibold mb-3 text-center">Top 10 Bairros com Mais Denúncias</h3>
+            <canvas id="bairrosChart"></canvas>
+        </div>
+        <form method="GET" action="{{ route('dashboard') }}"
+          class="flex gap-4 mb-6 bg-white p-4 rounded-xl shadow">
+
+            <div>
+                <label class="font-semibold text-gray-700">Ano:</label>
+                <select name="ano" class="border p-2 rounded-lg">
+                    <option value="todos">Todos</option>
+
+                    @for ($i = 2024; $i <= now()->year; $i++)
+                        <option value="{{ $i }}" {{ ($ano ?? '') == $i ? 'selected' : '' }}>
+                            {{ $i }}
+                        </option>
+                    @endfor
+                </select>
+            </div>
+
+            <div>
+                <label class="font-semibold text-gray-700">Mês:</label>
+                <select name="mes" class="border p-2 rounded-lg">
+                    <option value="todos">Todos</option>
+
+                    @foreach ([1=>'Janeiro',2=>'Fevereiro',3=>'Março',
+                            4=>'Abril',5=>'Maio',6=>'Junho',
+                            7=>'Julho',8=>'Agosto',9=>'Setembro',
+                            10=>'Outubro',11=>'Novembro',12=>'Dezembro'] as $num=>$nome)
+                        <option value="{{ $num }}" {{ ($mes ?? '') == $num ? 'selected' : '' }}>
+                            {{ $nome }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <button class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700">Filtrar</button>
+        </form>
     </div>
 
     <div style="background-color: antiquewhite;">
@@ -110,5 +152,19 @@
             Sair
         </a>
     </div>
+
+<script>
+    new Chart(document.getElementById('bairrosChart'), {
+        type: 'bar',
+        data: {
+            labels: @json($labelsBairros),
+            datasets: [{
+                label: 'Denúncias',
+                data: @json($valuesBairros),
+                backgroundColor: ['#AF0303', '#C24B23', '#7B0F0F']
+            }]
+        }
+    });
+</script>
 </body>
 </html>

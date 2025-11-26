@@ -5,6 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GarbageController;
 use App\Http\Controllers\FireController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FirelevelGraphController;
+use App\Http\Controllers\IncidencesController;
+
 
 require __DIR__.'/auth.php';
 
@@ -35,3 +38,6 @@ Route::get('/about', [AuthenticatedSessionWebController::class, 'aboutView'])
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];
 // });
+
+Route::get('/incidences', [IncidencesController::class, 'index'])
+    ->name('incidences.index');
