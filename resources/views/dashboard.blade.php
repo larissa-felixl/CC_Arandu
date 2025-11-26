@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Arandu - {{ config('app.name') }}</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
 </head>
 
 <body class="bg-[#F6F6F6] text-gray-800 font-montserrat">
@@ -58,22 +59,57 @@
             </div>
 
             <div class="bg-white rounded-xl shadow p-6">
-                <h2 class="text-center text-[20px] font-bold uppercase text-[#6C0D0E] mb-4">
-                    10 Bairros com mais denúncias no município
+                <h2 class="text-center text-[20px] font-bold uppercase text-[#4A5568] mb-6">
+                    Top 10 Bairros com Mais Denúncias
                 </h2>
-                <!-- Simulação de gráfico -->
-                <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center p-4">
-                    <p class="text-gray-500 text-center">Gráfico em desenvolvimento</p>
-                </div>
-            </div>
 
-            <div class="flex justify-between">
-                <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-semibold px-8 py-1 rounded-[5px] w-[48%]">
-                    MENSAL
-                </button>
-                <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-semibold px-8 py-1 rounded-[5px] w-[48%]">
-                    ANUAL
-                </button>
+                <div class="w-full mb-6">
+                    <canvas id="bairrosChart" style="max-height: 400px;"></canvas>
+                </div>
+
+                <form method="GET" action="{{ route('dashboard') }}"
+                    class="flex gap-4 mb-6 bg-white p-4 rounded-xl shadow">
+
+                        <div>
+                            <label class="font-semibold text-gray-700">Ano:</label>
+                            <select name="ano" class="border p-2 rounded-lg">
+                                <option value="todos">Todos</option>
+
+                                @for ($i = 2024; $i <= now()->year; $i++)
+                                    <option value="{{ $i }}" {{ ($ano ?? '') == $i ? 'selected' : '' }}>
+                                        {{ $i }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-gray-700">Mês:</label>
+                            <select name="mes" class="border p-2 rounded-lg">
+                                <option value="todos">Todos</option>
+
+                                @foreach ([1=>'Janeiro',2=>'Fevereiro',3=>'Março',
+                                        4=>'Abril',5=>'Maio',6=>'Junho',
+                                        7=>'Julho',8=>'Agosto',9=>'Setembro',
+                                        10=>'Outubro',11=>'Novembro',12=>'Dezembro'] as $num=>$nome)
+                                    <option value="{{ $num }}" {{ ($mes ?? '') == $num ? 'selected' : '' }}>
+                                        {{ $nome }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <button class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700">Filtrar</button>
+                </form>
+
+                <div class="flex justify-between gap-4 mt-4">
+                    <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-bold px-8 py-3 rounded-[5px] w-[48%] uppercase">
+                        Mensal
+                    </button>
+                    <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-bold px-8 py-3 rounded-[5px] w-[48%] uppercase">
+                        Anual
+                    </button>
+                </div>
             </div>
 
         </section>
@@ -137,6 +173,19 @@
 
         </aside>
     </main>
+    <script>
+    new Chart(document.getElementById('bairrosChart'), {
+        type: 'bar',
+        data: {
+            labels: @json($labelsBairros),
+            datasets: [{
+                label: 'Denúncias',
+                data: @json($valuesBairros),
+                backgroundColor: ['#AF0303', '#C24B23', '#7B0F0F']
+            }]
+        }
+    });
+</script>
 
 </body>
 </html>
