@@ -28,6 +28,8 @@ use App\Http\Controllers\Controller;
                 'latitude'        => 'required|numeric',
                 'longitude'       => 'required|numeric',
                 'address'         => 'nullable|string',
+                'city'            => 'nullable|string',
+                'neighborhood'    => 'nullable|string',
                 'img'             => 'nullable|string', 
                 'obs'             => 'nullable|string',
             ]);
@@ -39,6 +41,8 @@ use App\Http\Controllers\Controller;
                     'latitude'        => $request->latitude,
                     'longitude'       => $request->longitude,
                     'address'         => $request->address,
+                    'city'            => $request->city,
+                    'neighborhood'    => $request->neighborhood,
                     'img'             => $request->img,
                     'obs'             => $request->obs,
                 ]);
