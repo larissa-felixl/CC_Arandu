@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Report;
+use App\Enums\ReportTypeEnum;
+
 
 class DashboardController extends Controller
 {
@@ -29,6 +31,29 @@ class DashboardController extends Controller
             $reportsQuery->where('city', $city);
         }
 
+        // gráfico que mostra a porcentagem de cada tipo de denuncia
+        $incQuery = DB::table('reports')
+            ->select('reports_type_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('reports_type_id')
+            ->get();
+
+        $totalReports = $incQuery->sum('total');
+
+        $incidencesPercentuals = $incQuery->map(function ($item) use ($totalReports) {
+            $enum = ReportTypeEnum::from($item->reports_type_id);
+
+            $item->tipo_nome = $enum->label();
+
+            $item->percentual = $totalReports > 0
+                ? round(($item->total / $totalReports) * 100, 2)
+                : 0;
+
+            return $item;
+        });
+
+        $labelTipo = $incidencesPercentuals->pluck('tipo_nome');
+        $labelPorcentagem = $incidencesPercentuals->pluck('percentual');
+
         $reports = $reportsQuery->orderBy('created_at', 'desc')->get();
 
         $ano = $request->input('ano', 'todos');
@@ -51,7 +76,6 @@ class DashboardController extends Controller
 
         $labelsBairros = $bairros->pluck('neighborhood');
         $valuesBairros = $bairros->pluck('total');
-
 
         $statsQuery = Report::query();
         if ($city) {
@@ -99,6 +123,9 @@ class DashboardController extends Controller
         return view('dashboard', [
             'user' => $user,
             'city' => $city,
+            'incidences' => $incidencesPercentuals,
+            'typeName' => $labelTipo,
+            'percentuals' => $labelPorcentagem,
             'reports' => $reports,
             'labelsBairros' => $labelsBairros,
             'valuesBairros' => $valuesBairros,

@@ -79,10 +79,8 @@
     </div>
 
     <div>
-        <h1 style="background-color: #d4edda;">Incidencias </h1>
-        <span>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga, cupiditate magni, ea error porro ut amet veritatis nostrum aliquid eligendi quidem sint dolore. Possimus animi eum sequi, unde deserunt ea.
-        </span>
+        <h1 style="background-color: #d4edda;">Incidencias de Focos de Lixos e Queimadas</h1>
+        <canvas id="incidenciasChart"></canvas>
     </div>
 
     <div>
@@ -154,12 +152,24 @@
     </div>
 
 <script>
+    new Chart(document.getElementById('incidenciasChart'), {
+        type: 'doughnut',
+        data: {
+            labels: @json($typeName),
+            datasets: [{
+                label: '% de Denúncias',
+                data: @json($percentuals),
+                backgroundColor: ['#AF0303', '#C24B23']
+            }]
+        }
+    });
+
     new Chart(document.getElementById('bairrosChart'), {
         type: 'bar',
         data: {
             labels: @json($labelsBairros),
             datasets: [{
-                label: 'Denúncias',
+                label: 'Quantidade de denúncias',
                 data: @json($valuesBairros),
                 backgroundColor: ['#AF0303', '#C24B23', '#7B0F0F']
             }]
