@@ -86,12 +86,12 @@ class DashboardController extends Controller
         ];
 
         $peakMonth = $reportsByMonth ? [
-            'name' => $monthNames[$reportsByMonth->month] . '/' . $reportsByMonth->year,
+            'name' => $monthNames[(int)$reportsByMonth->month] . '/' . $reportsByMonth->year,
             'total' => $reportsByMonth->total
         ] : null;
 
         $leastMonth = $reportsByLeastMonth ? [
-            'name' => $monthNames[$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
+            'name' => $monthNames[(int)$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
             'total' => $reportsByLeastMonth->total
         ] : null;
 

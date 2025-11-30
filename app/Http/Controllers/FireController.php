@@ -66,7 +66,7 @@ class FireController extends Controller
                 9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
             ];
             $peakMonth = [
-                'name' => $monthNames[$reportsByMonth->month] . '/' . $reportsByMonth->year,
+                'name' => $monthNames[(int)$reportsByMonth->month] . '/' . $reportsByMonth->year,
                 'total' => $reportsByMonth->total
             ];
         }
@@ -80,7 +80,7 @@ class FireController extends Controller
                 9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
             ];
             $leastMonth = [
-                'name' => $monthNames[$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
+                'name' => $monthNames[(int)$reportsByLeastMonth->month] . '/' . $reportsByLeastMonth->year,
                 'total' => $reportsByLeastMonth->total
             ];
         }
