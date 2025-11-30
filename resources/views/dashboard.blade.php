@@ -68,48 +68,43 @@
                 </div>
 
                 <form method="GET" action="{{ route('dashboard') }}"
-                    class="flex gap-4 mb-6 bg-white p-4 rounded-xl shadow">
+                    class="flex flex-col gap-4 bg-white p-4 rounded-xl">
 
-                        <div>
-                            <label class="font-semibold text-gray-700">Ano:</label>
-                            <select name="ano" class="border p-2 rounded-lg">
-                                <option value="todos">Todos</option>
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <label class="font-semibold text-gray-700 block mb-2">Ano:</label>
+                                <select name="ano" class="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:border-[#86391F]">
+                                    <option value="todos">Todos</option>
 
-                                @for ($i = 2024; $i <= now()->year; $i++)
-                                    <option value="{{ $i }}" {{ ($ano ?? '') == $i ? 'selected' : '' }}>
-                                        {{ $i }}
-                                    </option>
-                                @endfor
-                            </select>
+                                    @for ($i = 2024; $i <= now()->year; $i++)
+                                        <option value="{{ $i }}" {{ ($ano ?? '') == $i ? 'selected' : '' }}>
+                                            {{ $i }}
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <div class="flex-1">
+                                <label class="font-semibold text-gray-700 block mb-2">Mês:</label>
+                                <select name="mes" class="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:border-[#86391F]">
+                                    <option value="todos">Todos</option>
+
+                                    @foreach ([1=>'Janeiro',2=>'Fevereiro',3=>'Março',
+                                            4=>'Abril',5=>'Maio',6=>'Junho',
+                                            7=>'Julho',8=>'Agosto',9=>'Setembro',
+                                            10=>'Outubro',11=>'Novembro',12=>'Dezembro'] as $num=>$nome)
+                                        <option value="{{ $num }}" {{ ($mes ?? '') == $num ? 'selected' : '' }}>
+                                            {{ $nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="font-semibold text-gray-700">Mês:</label>
-                            <select name="mes" class="border p-2 rounded-lg">
-                                <option value="todos">Todos</option>
-
-                                @foreach ([1=>'Janeiro',2=>'Fevereiro',3=>'Março',
-                                        4=>'Abril',5=>'Maio',6=>'Junho',
-                                        7=>'Julho',8=>'Agosto',9=>'Setembro',
-                                        10=>'Outubro',11=>'Novembro',12=>'Dezembro'] as $num=>$nome)
-                                    <option value="{{ $num }}" {{ ($mes ?? '') == $num ? 'selected' : '' }}>
-                                        {{ $nome }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <button class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700">Filtrar</button>
+                        <button type="submit" class="bg-[#86391F] hover:bg-[#A45006] text-white font-bold px-8 py-3 rounded-[5px] w-full uppercase">
+                            Filtrar
+                        </button>
                 </form>
-
-                <div class="flex justify-between gap-4 mt-4">
-                    <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-bold px-8 py-3 rounded-[5px] w-[48%] uppercase">
-                        Mensal
-                    </button>
-                    <button class="bg-[#86391F] hover:bg-[#A45006] text-white font-bold px-8 py-3 rounded-[5px] w-[48%] uppercase">
-                        Anual
-                    </button>
-                </div>
             </div>
 
         </section>
@@ -124,27 +119,23 @@
                         class="flex items-center justify-center w-8 h-8 rounded-full bg-[#6C0D0E] text-white text-lg font-bold 
                                 hover:bg-[#983132] transition-colors duration-300"
                         title="Mais informações sobre as incidências"
-                        onclick="alert('Aqui você pode adicionar informações sobre as incidências de queimadas e focos de lixo.')"
+                        onclick="alert('Este gráfico mostra a porcentagem de denúncias de queimadas e focos de lixo registradas no município.')"
                     >
                         ?
                     </button>
                 </div>
 
-                <div class="flex justify-center items-center">
-                    <div class="relative w-24 h-24 rounded-full border-8 border-red-700">
-                        <div class="absolute inset-[10px] bg-white rounded-full flex items-center justify-center">
-                            <span class="text-xs font-bold">70%</span>
-                        </div>
-                    </div>
+                <div class="flex justify-center items-center my-4">
+                    <canvas id="incidenciasChart" style="max-height: 200px; max-width: 200px;"></canvas>
                 </div>
 
                 <div class="flex justify-center mt-3 space-x-4 text-xs">
                     <div class="flex items-center space-x-1">
-                        <span class="w-3 h-3 bg-orange-400 rounded"></span>
+                        <span class="w-3 h-3 bg-[#C24B23] rounded"></span>
                         <span>Focos de Lixo</span>
                     </div>
                     <div class="flex items-center space-x-1">
-                        <span class="w-3 h-3 bg-red-700 rounded"></span>
+                        <span class="w-3 h-3 bg-[#AF0303] rounded"></span>
                         <span>Queimadas</span>
                     </div>
                 </div>
@@ -174,12 +165,44 @@
         </aside>
     </main>
     <script>
+    // Gráfico de Incidências (Doughnut)
+    new Chart(document.getElementById('incidenciasChart'), {
+        type: 'doughnut',
+        data: {
+            labels: @json($typeName),
+            datasets: [{
+                label: '% de Denúncias',
+                data: @json($percentuals),
+                backgroundColor: ['#AF0303', '#C24B23'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.parsed + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Gráfico de Bairros (Bar)
     new Chart(document.getElementById('bairrosChart'), {
         type: 'bar',
         data: {
             labels: @json($labelsBairros),
             datasets: [{
-                label: 'Denúncias',
+                label: 'Quantidade de denúncias',
                 data: @json($valuesBairros),
                 backgroundColor: ['#AF0303', '#C24B23', '#7B0F0F']
             }]
