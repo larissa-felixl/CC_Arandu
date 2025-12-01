@@ -14,13 +14,15 @@ class GarbageController extends Controller
         // Adicione mais mapeamentos conforme necessário
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $userEmail = $user->email;
         
         // Verifica se o email do usuário está no mapeamento
         $city = $this->emailCityMap[$userEmail] ?? null;
+        
+        $ano = $request->input('ano', 'todos');
         
         // Filtra reports do tipo lixo (reports_type_id = 2)
         $query = Report::with(['type', 'user'])
@@ -29,6 +31,10 @@ class GarbageController extends Controller
         // Se houver cidade mapeada, filtra também por cidade
         if ($city) {
             $query->where('city', $city);
+        }
+        
+        if ($ano !== 'todos') {
+            $query->whereYear('created_at', $ano);
         }
         
         $reports = $query->orderBy('created_at', 'desc')->get();
@@ -90,7 +96,8 @@ class GarbageController extends Controller
             'city' => $city,
             'reports' => $reports,
             'peakMonth' => $peakMonth,
-            'leastMonth' => $leastMonth
+            'leastMonth' => $leastMonth,
+            'ano' => $ano
         ]);
     }
 }

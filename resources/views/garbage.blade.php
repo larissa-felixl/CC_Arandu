@@ -15,7 +15,6 @@
         </div>
 
         <nav class="flex items-center space-x-6 text-sm font-medium text-[#386641]">
-            <a href="#" class="hover:text-[#2A4B30]">GALERIA</a>
             <a href="{{ route('logout') }}" class="hover:text-[#2A4B30]">LOGOUT</a>
             <a href="{{ route('dashboard') }}" class="hover:text-[#2A4B30]">DASHBOARD</a>
             <a href="{{ route('about') }}" class="hover:text-[#2A4B30]">SOBRE</a>
@@ -55,24 +54,23 @@
     </button>
     <div id="conteudoFiltro" class="hidden transition-all duration-300 mt-2">
 
-        <div class="rounded-lg p-4 bg-white shadow">
+        <form method="GET" action="{{ route('garbage') }}" class="rounded-lg p-4 bg-white shadow">
       
-            <label class="font-semibold">Selecionar ano</label>
-            <select id="selectAno" name="ano" class="w-full border rounded-lg px-4 py-2 mb-3">
-                    <option value="">Selecionar ano</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-            </select>
-            <label class="font-semibold">Selecionar mês</label>
-            <select id="selectMes" name="mes" class="w-full border rounded-lg px-4 py-2 mb-3">
-                    <option value="">Selecionar mês</option>
+            <label class="font-semibold text-gray-700 block mb-2">Ano:</label>
+            <select name="ano" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:border-[#5E8845]">
+                <option value="todos">Todos</option>
+                @for ($i = 2024; $i <= now()->year; $i++)
+                    <option value="{{ $i }}" {{ ($ano ?? 'todos') == $i ? 'selected' : '' }}>
+                        {{ $i }}
+                    </option>
+                @endfor
             </select>
 
-            <button class="w-full bg-[#414D39] text-white font-bold py-2 rounded-lg">
-                SALVAR
+            <button type="submit" class="w-full bg-[#414D39] hover:bg-[#2F4D35] text-white font-bold py-2 rounded-lg transition">
+                FILTRAR
             </button>
 
-        </div>
+        </form>
 
     </div>
 <div class="mt-6 space-y-4">
@@ -193,40 +191,6 @@ btnFiltro.addEventListener("click", () => {
         conteudoFiltro.classList.toggle("hidden");
         setaFiltro.classList.toggle("rotate-180");
 });
-
-// Pega os selects
-const selectAno = document.getElementById("selectAno");
-const selectMes = document.getElementById("selectMes");
-
-// Lista completa de meses
-const mesesCompletos = [
-        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
-
-// Meses válidos apenas em 2025
-const meses2025 = ["Agosto", "Setembro", "Outubro", "Novembro"];
-
-// Quando o ano mudar...
-selectAno.addEventListener("change", () => {
-    
-        // Limpa o select de mês
-        selectMes.innerHTML = `<option value="">Selecionar mês</option>`;
-
-        if (selectAno.value === "2025") {
-                // Adiciona somente meses de 2025
-                meses2025.forEach(mes => {
-                        selectMes.innerHTML += `<option value="${mes}">${mes}</option>`;
-                });
-
-        } else if (selectAno.value === "2024") {
-                // Adiciona todos os meses
-                mesesCompletos.forEach(mes => {
-                        selectMes.innerHTML += `<option value="${mes}">${mes}</option>`;
-                });
-        }
-});
-
 
 document.querySelectorAll(".btnInfo").forEach(botao => {
     botao.addEventListener("click", () => {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Report;
 
 class FireController extends Controller
@@ -14,13 +15,15 @@ class FireController extends Controller
         // Adicione mais mapeamentos conforme necessário
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $userEmail = $user->email;
         
         // Verifica se o email do usuário está no mapeamento
         $city = $this->emailCityMap[$userEmail] ?? null;
+        
+        $ano = $request->input('ano', 'todos');
         
         // Filtra reports do tipo fogo/queimada (reports_type_id = 1)
         $query = Report::with(['type', 'user', 'fireLevel'])
@@ -31,7 +34,27 @@ class FireController extends Controller
             $query->where('city', $city);
         }
         
+        if ($ano !== 'todos') {
+            $query->whereYear('created_at', $ano);
+        }
+        
         $reports = $query->orderBy('created_at', 'desc')->get();
+        
+        // Dados para gráfico de níveis de fogo
+        $dadosFogo = Report::join('fire_levels', 'reports.id', '=', 'fire_levels.reports_id')
+            ->select(
+                'fire_levels.level as nivel_fogo',
+                DB::raw('COUNT(*) as total')
+            )
+            ->where('reports.reports_type_id', 1)
+            ->when($city, fn($q) => $q->where('reports.city', $city))
+            ->when($ano !== 'todos', fn($q) => $q->whereYear('reports.created_at', $ano))
+            ->groupBy('fire_levels.level')
+            ->orderBy('fire_levels.level', 'asc')
+            ->get();
+
+        $labelsTipos = $dadosFogo->pluck('nivel_fogo');
+        $valuesTipos = $dadosFogo->pluck('total');
         
         // Calcula estatísticas por mês - Mês com MAIS denúncias
         $statsQuery = Report::where('reports_type_id', 1);
@@ -89,8 +112,11 @@ class FireController extends Controller
             'user' => $user,
             'city' => $city,
             'reports' => $reports,
+            'labelsTipos' => $labelsTipos,
+            'valuesTipos' => $valuesTipos,
             'peakMonth' => $peakMonth,
-            'leastMonth' => $leastMonth
+            'leastMonth' => $leastMonth,
+            'ano' => $ano
         ]);
     }
 }

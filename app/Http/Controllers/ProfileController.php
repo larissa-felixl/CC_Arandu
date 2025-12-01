@@ -8,7 +8,7 @@ class ProfileController extends Controller
 {
     // Mapeamento estático: email do usuário → cidade (mesmo dos outros controllers)
     private $emailCityMap = [
-        'teste@gmail.com' => 'Russas',
+        'teste@gmail.com' => 'Fortaleza',
         // Adicione mais mapeamentos conforme necessário
     ];
 

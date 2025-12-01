@@ -18,7 +18,6 @@
         </div>
         
         <nav class="flex items-center space-x-6 text-sm font-medium text-[#6C0D0E]">
-            <a href="#" class="hover:text-[#983132]">GALERIA</a>
             <a href="{{ route('logout.page') }}" class="hover:text-[#983132]">LOGOUT</a>
             <a href="{{ route('dashboard') }}" class="hover:text-[#983132]">DASHBOARD</a>
             <a href="{{ route('about') }}" class="hover:text-[#983132]">SOBRE</a>
@@ -37,7 +36,7 @@
             <!-- Bem-vindo e cidade -->
             <div class="bg-white rounded-xl shadow p-4">
                 <h1 class="text-[24px] font-bold text-[#6C0D0E] mb-2">
-                    Bem-vindo, {{ $user->name }}!
+                    Bem-vindo(a), {{ $user->name }}!
                 </h1>
                 <p class="text-gray-600">
                     Você está visualizando informações {{ $city ? 'da cidade de ' . $city : 'de todas as cidades' }}

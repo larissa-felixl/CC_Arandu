@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6C0D0E 0%, #4C0909 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -55,13 +55,13 @@
             font-size: 16px;
         }
         .btn-confirm {
-            background-color: #f44336;
+            background-color: #A45006;
         }
         .btn-confirm:hover {
             background-color: #da190b;
         }
         .btn-cancel {
-            background-color: #4CAF50;
+            background-color: #6A994E;
         }
         .btn-cancel:hover {
             background-color: #45a049;

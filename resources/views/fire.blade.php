@@ -16,7 +16,6 @@
         </div>
 
         <nav class="flex items-center space-x-6 text-sm font-medium text-[#7B1113]">
-            <a href="#" class="hover:text-[#5E1113]">GALERIA</a>
             <a href="{{ route('logout') }}" class="hover:text-[#5E1113]">LOGOUT</a>
             <a href="{{ route('dashboard') }}" class="hover:text-[#5E1113]">DASHBOARD</a>
             <a href="{{ route('about') }}" class="hover:text-[#5E1113]">SOBRE</a>
@@ -56,24 +55,23 @@
     </button>
     <div id="conteudoFiltro" class="hidden transition-all duration-300 mt-2">
 
-        <div class="rounded-lg p-4 bg-white shadow">
+        <form method="GET" action="{{ route('fire') }}" class="rounded-lg p-4 bg-white shadow">
       
-            <label class="font-semibold">Selecionar ano</label>
-            <select id="selectAno" name="ano" class="w-full border rounded-lg px-4 py-2 mb-3">
-                    <option value="">Selecionar ano</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-            </select>
-            <label class="font-semibold">Selecionar mês</label>
-            <select id="selectMes" name="mes" class="w-full border rounded-lg px-4 py-2 mb-3">
-                    <option value="">Selecionar mês</option>
+            <label class="font-semibold text-gray-700 block mb-2">Ano:</label>
+            <select name="ano" class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:border-[#B85D15]">
+                <option value="todos">Todos</option>
+                @for ($i = 2024; $i <= now()->year; $i++)
+                    <option value="{{ $i }}" {{ ($ano ?? 'todos') == $i ? 'selected' : '' }}>
+                        {{ $i }}
+                    </option>
+                @endfor
             </select>
 
-            <button class="w-full bg-[#5E1113] text-white font-bold py-2 rounded-lg">
-                SALVAR
+            <button type="submit" class="w-full bg-[#5E1113] hover:bg-[#7B1113] text-white font-bold py-2 rounded-lg transition">
+                FILTRAR
             </button>
 
-        </div>
+        </form>
 
     </div>
 <div class="mt-6 space-y-4">
@@ -121,6 +119,22 @@
             {{ $leastMonth['name'] ?? '' }}
         </p>
 
+        <div class="info hidden pl-3 pr-2 py-4 text-[#5E1113] text-sm leading-tight"></div>
+    </div>
+
+    <!-- ===== CARD NÍVEIS DE FOGO ===== -->
+    <div class="card group bg-gray-50 rounded-lg p-4 shadow-sm relative overflow-hidden">
+        <div class="absolute left-0 top-0 h-full w-2 bg-[#7B1113]"></div>
+        <div class="flex items-center justify-between pl-3 mb-4">
+            <p class="text-sm font-bold text-[#5E1113]">NÍVEIS DE QUEIMADAS</p>
+            <button 
+                class="btnInfo w-6 h-6 bg-[#7B1113] text-white rounded-full flex items-center justify-center"
+                data-texto="ESTE GRÁFICO MOSTRA A DISTRIBUIÇÃO DAS QUEIMADAS POR NÍVEL DE INTENSIDADE NO PERÍODO ANALISADO."
+            >?</button>
+        </div>
+        <div class="flex justify-center items-center">
+            <canvas id="tiposChart" style="max-height: 200px; max-width: 200px;"></canvas>
+        </div>
         <div class="info hidden pl-3 pr-2 py-4 text-[#5E1113] text-sm leading-tight"></div>
     </div>
 
@@ -188,40 +202,6 @@ btnFiltro.addEventListener("click", () => {
         setaFiltro.classList.toggle("rotate-180");
 });
 
-// Pega os selects
-const selectAno = document.getElementById("selectAno");
-const selectMes = document.getElementById("selectMes");
-
-// Lista completa de meses
-const mesesCompletos = [
-        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
-
-// Meses válidos apenas em 2025
-const meses2025 = ["Agosto", "Setembro", "Outubro", "Novembro"];
-
-// Quando o ano mudar...
-selectAno.addEventListener("change", () => {
-    
-        // Limpa o select de mês
-        selectMes.innerHTML = `<option value="">Selecionar mês</option>`;
-
-        if (selectAno.value === "2025") {
-                // Adiciona somente meses de 2025
-                meses2025.forEach(mes => {
-                        selectMes.innerHTML += `<option value="${mes}">${mes}</option>`;
-                });
-
-        } else if (selectAno.value === "2024") {
-                // Adiciona todos os meses
-                mesesCompletos.forEach(mes => {
-                        selectMes.innerHTML += `<option value="${mes}">${mes}</option>`;
-                });
-        }
-});
-
-
 document.querySelectorAll(".btnInfo").forEach(botao => {
     botao.addEventListener("click", () => {
     
@@ -238,6 +218,78 @@ document.querySelectorAll(".btnInfo").forEach(botao => {
             info.textContent = botao.dataset.texto;
         }
     });
+});
+
+// Gráfico de Níveis de Fogo
+const labelsTipos = @json($labelsTipos ?? []);
+const valuesTipos = @json($valuesTipos ?? []);
+
+console.log('Labels:', labelsTipos);
+console.log('Values:', valuesTipos);
+
+// Define todos os níveis possíveis
+const todosNiveis = [1, 2, 3, 4];
+const nomesTipos = {
+    1: "Focos Baixos",
+    2: "Focos Médios",
+    3: "Focos Grandes",
+    4: "Focos Preocupantes"
+};
+
+const coresPorNivel = {
+    1: '#6C0E0E',
+    2: '#A45007',
+    3: '#C3AE83',
+    4: '#935139'
+};
+
+// Cria arrays completos com todos os níveis (incluindo zeros)
+const labelsCompletos = todosNiveis.map(n => nomesTipos[n]);
+const valuesCompletos = todosNiveis.map(nivel => {
+    const index = labelsTipos.indexOf(nivel);
+    return index !== -1 ? valuesTipos[index] : 0;
+});
+const coresCompletas = todosNiveis.map(n => coresPorNivel[n]);
+
+new Chart(document.getElementById('tiposChart'), {
+    type: 'doughnut',
+    data: {
+        labels: labelsCompletos,
+        datasets: [{
+            data: valuesCompletos,
+            backgroundColor: coresCompletas,
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    boxWidth: 12,
+                    padding: 8,
+                    font: {
+                        size: 10,
+                        family: 'Montserrat'
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(ctx) {
+                        const total = ctx.chart._metasets[0].total;
+                        const value = ctx.raw;
+                        const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                        return `${value} denúncias (${pct}%)`;
+                    }
+                }
+            }
+        }
+    }
 });
 </script>
 
